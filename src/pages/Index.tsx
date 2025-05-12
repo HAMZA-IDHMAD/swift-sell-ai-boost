@@ -1,12 +1,65 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useEffect, useState } from "react";
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/components/HeroSection";
+import ProblemSection from "@/components/ProblemSection";
+import FeaturesSection from "@/components/FeaturesSection";
+import HowItWorks from "@/components/HowItWorks";
+import Testimonials from "@/components/Testimonials";
+import CtaSection from "@/components/CtaSection";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { ArrowUp } from "lucide-react";
 
 const Index = () => {
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  
+  useEffect(() => {
+    // Google Fonts for Inter
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap";
+    document.head.appendChild(link);
+    
+    // Back to top button visibility
+    const handleScroll = () => {
+      if (window.scrollY > 500) {
+        setShowBackToTop(true);
+      } else {
+        setShowBackToTop(false);
+      }
+    };
+    
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+  
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
+  
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-swiftsell-dark text-white">
+      <Navbar />
+      <HeroSection />
+      <ProblemSection />
+      <FeaturesSection />
+      <HowItWorks />
+      <Testimonials />
+      <CtaSection />
+      <Footer />
+      
+      {/* Back to top button */}
+      <button 
+        className={`fixed bottom-6 right-6 bg-swiftsell-blue/80 hover:bg-swiftsell-blue text-white p-3 rounded-full shadow-lg transition-all duration-300 z-50 ${showBackToTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}
+        onClick={scrollToTop}
+        aria-label="Back to top"
+      >
+        <ArrowUp size={20} />
+      </button>
     </div>
   );
 };
