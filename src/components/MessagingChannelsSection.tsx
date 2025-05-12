@@ -1,6 +1,6 @@
 
 import { useState, useRef, useEffect } from "react";
-import { MessageSquare, Instagram, Facebook } from "lucide-react";
+import { MessageSquare, Instagram, Facebook, Play, Image } from "lucide-react";
 import AnimatedText from "./ui/AnimatedText";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -10,6 +10,12 @@ interface Message {
   sender: "customer" | "ai";
   text: string;
   includeButton?: boolean;
+  audioMessage?: boolean;
+  productImage?: {
+    src: string;
+    productName: string;
+    price: string;
+  };
 }
 
 interface MockChatProps {
@@ -20,6 +26,7 @@ interface MockChatProps {
 const MockChat = ({ channel, messages }: MockChatProps) => {
   const chatRef = useRef<HTMLDivElement>(null);
   const [visibleMessages, setVisibleMessages] = useState<number>(0);
+  const [playingAudio, setPlayingAudio] = useState<number | null>(null);
   
   // Colors based on channel
   const getBubbleColor = (sender: "customer" | "ai") => {
@@ -34,6 +41,19 @@ const MockChat = ({ channel, messages }: MockChatProps) => {
         return "bg-[#0084FF] text-white";
       default:
         return "bg-gray-200 text-black";
+    }
+  };
+  
+  // Audio playback simulation
+  const handlePlayAudio = (index: number) => {
+    if (playingAudio === index) {
+      setPlayingAudio(null);
+    } else {
+      setPlayingAudio(index);
+      // Simulate end of audio after 3 seconds
+      setTimeout(() => {
+        setPlayingAudio(null);
+      }, 3000);
     }
   };
   
@@ -89,7 +109,39 @@ const MockChat = ({ channel, messages }: MockChatProps) => {
             className={`flex ${message.sender === "customer" ? "justify-start" : "justify-end"} animate-fade-in`}
           >
             <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${getBubbleColor(message.sender)}`}>
-              <p>{message.text}</p>
+              {message.audioMessage && message.sender === "ai" ? (
+                <div className="flex items-center space-x-2">
+                  <button 
+                    onClick={() => handlePlayAudio(index)}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center ${playingAudio === index ? 'bg-white/20 animate-pulse' : 'bg-white/10'}`}
+                  >
+                    <Play size={16} className={playingAudio === index ? "animate-pulse" : ""} />
+                  </button>
+                  <span>{message.text}</span>
+                </div>
+              ) : message.productImage ? (
+                <div className="space-y-2">
+                  <div className="relative">
+                    <div className="w-full h-24 bg-gray-800 rounded-lg overflow-hidden">
+                      <div className="absolute top-2 left-2 bg-black/60 rounded-full p-1">
+                        <Image size={14} />
+                      </div>
+                      <img 
+                        src={message.productImage.src} 
+                        alt="Product" 
+                        className="w-full h-full object-cover opacity-90"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="font-medium text-sm">{message.productImage.productName}</p>
+                    <p className="text-sm opacity-80">{message.productImage.price}</p>
+                  </div>
+                </div>
+              ) : (
+                <p>{message.text}</p>
+              )}
+              
               {message.includeButton && (
                 <button className="mt-2 bg-white/90 text-black rounded-full px-3 py-1 text-xs font-medium">
                   Order Now →
@@ -125,23 +177,32 @@ const MessagingChannelsSection = () => {
     { sender: "ai", text: "Hello! Yes, the Azure Summer Dress is available in medium size for $49.99." },
     { sender: "ai", text: "Would you like to place an order? I can help you check out right now.", includeButton: true },
     { sender: "customer", text: "Great! Does it come with free shipping?" },
-    { sender: "ai", text: "Yes! All orders over $35 qualify for free shipping. Your order would arrive in 2-3 business days." }
+    { sender: "ai", audioMessage: true, text: "Yes! All orders over $35 qualify for free shipping. Your order would arrive in 2-3 business days." }
   ];
   
   const instagramMessages: Message[] = [
     { sender: "customer", text: "Hey, I saw your post about the new sneakers. Are those still available?" },
     { sender: "ai", text: "Hi there! Yes, the Urban Max Sneakers are available in sizes 7-12. Which size were you interested in?" },
     { sender: "customer", text: "I need a size 9. How much are they?" },
-    { sender: "ai", text: "Size 9 is in stock! They're $79.99 and currently part of our buy-one-get-one 50% off promotion.", includeButton: true }
+    { sender: "customer", productImage: {
+      src: "/placeholder.svg",
+      productName: "Urban Max Sneakers",
+      price: "$79.99"
+    }},
+    { sender: "ai", text: "Thanks for sharing the image! These are our Urban Max Sneakers in Black. Size 9 is in stock! They're $79.99 and currently part of our buy-one-get-one 50% off promotion.", includeButton: true }
   ];
   
   const facebookMessages: Message[] = [
     { sender: "customer", text: "Do you ship internationally?" },
     { sender: "ai", text: "Yes! We ship to over 30 countries. Where are you located?" },
     { sender: "customer", text: "I'm in Canada" },
-    { sender: "ai", text: "Perfect! We offer shipping to Canada for a flat rate of $9.99, or free on orders over $75. Would you like to see our bestsellers?" },
-    { sender: "customer", text: "Yes please!" },
-    { sender: "ai", text: "Here are our top 3 products this month. The Comfort+ Pillow Set is our most popular item in Canada!", includeButton: true }
+    { sender: "ai", audioMessage: true, text: "Perfect! We offer shipping to Canada for a flat rate of $9.99, or free on orders over $75." },
+    { sender: "customer", productImage: {
+      src: "/placeholder.svg",
+      productName: "Comfort+ Pillow Set",
+      price: "$49.99"
+    }},
+    { sender: "ai", text: "I see you're interested in our Comfort+ Pillow Set! It's our most popular item in Canada!", includeButton: true }
   ];
   
   useEffect(() => {
