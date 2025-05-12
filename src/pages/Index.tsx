@@ -4,6 +4,8 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import ProblemSection from "@/components/ProblemSection";
 import FeaturesSection from "@/components/FeaturesSection";
+import CoreFeaturesSection from "@/components/CoreFeaturesSection";
+import MessagingChannelsSection from "@/components/MessagingChannelsSection";
 import HowItWorks from "@/components/HowItWorks";
 import Testimonials from "@/components/Testimonials";
 import CtaSection from "@/components/CtaSection";
@@ -47,7 +49,9 @@ const Index = () => {
       <HeroSection />
       <ProblemSection />
       <FeaturesSection />
+      <CoreFeaturesSection />
       <HowItWorks />
+      <MessagingChannelsSection />
       <Testimonials />
       <CtaSection />
       <Footer />
