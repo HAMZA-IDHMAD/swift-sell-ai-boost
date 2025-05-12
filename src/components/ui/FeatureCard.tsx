@@ -1,5 +1,5 @@
 
-import { Clock, Chatbot, ShoppingBag } from "lucide-react";
+import { Clock, MessageSquare, ShoppingBag } from "lucide-react";
 import { useState } from "react";
 
 type IconType = "clock" | "chatbot" | "shopping-bag";
@@ -19,11 +19,11 @@ const FeatureCard = ({ title, description, icon, delay }: FeatureCardProps) => {
       case "clock":
         return <Clock className="h-6 w-6" />;
       case "chatbot":
-        return <Chatbot className="h-6 w-6" />;
+        return <MessageSquare className="h-6 w-6" />;
       case "shopping-bag":
         return <ShoppingBag className="h-6 w-6" />;
       default:
-        return <Chatbot className="h-6 w-6" />;
+        return <MessageSquare className="h-6 w-6" />;
     }
   };
   
