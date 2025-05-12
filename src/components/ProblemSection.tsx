@@ -11,22 +11,22 @@ const ProblemSection = () => {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="order-2 md:order-1">
-            <div className="glass-card rounded-xl p-6 h-full">
+            <div className="glass-card rounded-xl p-6 h-full bg-black/40">
               <div className="space-y-6">
-                <div className="relative p-4 bg-black/20 rounded-md border border-white/5">
+                <div className="relative p-4 bg-black/50 rounded-md border border-white/10">
                   <div className="absolute top-0 left-4 -translate-y-1/2 px-2 bg-swiftsell-dark text-gray-400 text-xs">
                     Customer
                   </div>
                   <p className="text-gray-300">Hi! Do you ship to Canada and how long does it take?</p>
                 </div>
                 
-                <div className="relative ml-4 p-4 bg-black/40 rounded-md border border-white/5">
+                <div className="relative p-4 bg-black/70 rounded-md border border-white/5 text-right">
                   <div className="absolute top-0 right-4 -translate-y-1/2 px-2 bg-swiftsell-dark text-gray-400 text-xs">
                     8 hours later...
                   </div>
                 </div>
                 
-                <div className="relative ml-8 p-4 bg-black/20 rounded-md border border-white/5">
+                <div className="relative p-4 bg-black/50 rounded-md border border-white/10">
                   <div className="absolute top-0 left-4 -translate-y-1/2 px-2 bg-swiftsell-dark text-gray-400 text-xs">
                     Customer
                   </div>
@@ -51,14 +51,14 @@ const ProblemSection = () => {
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="glass-card rounded-xl p-6">
+                <div className="glass-card rounded-xl p-6 bg-black/40">
                   <h3 className="font-bold mb-2 text-gradient">
                     <AnimatedCounter end={78} suffix="%" className="text-3xl" /> 
                   </h3>
                   <p className="text-gray-400">of customers prefer to shop through messaging apps</p>
                 </div>
                 
-                <div className="glass-card rounded-xl p-6">
+                <div className="glass-card rounded-xl p-6 bg-black/40">
                   <h3 className="font-bold mb-2 text-gradient">
                     <AnimatedCounter end={43} suffix="%" className="text-3xl" />
                   </h3>
