@@ -1,5 +1,7 @@
 
 import { useState, useEffect, useRef } from "react";
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface Testimonial {
   name: string;
@@ -10,7 +12,8 @@ interface Testimonial {
 
 const Testimonials = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const intervalRef = useRef<number | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
   
   const testimonials: Testimonial[] = [
     {
@@ -31,43 +34,57 @@ const Testimonials = () => {
       company: "Glow Beauty Co.",
       text: "Our Instagram DM conversions have tripled since implementing SwiftSell AI. The personalization is impressive.",
     },
+    {
+      name: "David Rodriguez",
+      role: "CEO",
+      company: "FitStyle Apparel",
+      text: "The ROI has been incredible. For every $1 I spend on SwiftSell AI, I'm getting $7 back in new sales.",
+    },
+    {
+      name: "Aisha Thomas",
+      role: "Marketing Manager", 
+      company: "Luxe Home Decor",
+      text: "Our customer satisfaction scores actually improved after implementing the AI assistant - that was unexpected!",
+    }
   ];
   
-  const nextTestimonial = () => {
-    setActiveIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
-  };
-  
-  const prevTestimonial = () => {
-    setActiveIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length);
-  };
-  
   useEffect(() => {
-    intervalRef.current = window.setInterval(nextTestimonial, 5000);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          if (cardsRef.current) {
+            const cards = cardsRef.current.querySelectorAll('.testimonial-card');
+            cards.forEach((card, index) => {
+              setTimeout(() => {
+                card.classList.add('animate-fade-in');
+                card.classList.remove('opacity-0');
+              }, index * 150);
+            });
+          }
+        }
+      },
+      { threshold: 0.2 }
+    );
+    
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
     
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
       }
     };
   }, []);
   
-  const stopAutoPlay = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-  };
-  
-  const startAutoPlay = () => {
-    if (!intervalRef.current) {
-      intervalRef.current = window.setInterval(nextTestimonial, 5000);
-    }
-  };
-  
   return (
-    <section id="testimonials" className="py-20 relative overflow-hidden">
-      {/* Background parallax effect */}
-      <div className="absolute inset-0 bg-gradient-radial from-swiftsell-violet/5 to-transparent opacity-20"></div>
+    <section id="testimonials" ref={sectionRef} className="py-20 relative overflow-hidden">
+      {/* Background with animated gradient */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-radial from-swiftsell-violet/5 to-transparent opacity-20"></div>
+        <div className="absolute top-1/4 right-1/4 w-64 h-64 rounded-full bg-swiftsell-blue/5 blur-3xl animate-float"></div>
+        <div className="absolute bottom-1/3 left-1/3 w-80 h-80 rounded-full bg-swiftsell-violet/5 blur-3xl animate-float animate-delay-700"></div>
+      </div>
       
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
@@ -79,66 +96,33 @@ const Testimonials = () => {
           </p>
         </div>
         
-        <div className="max-w-4xl mx-auto">
-          <div 
-            className="relative glass-card rounded-xl p-8 min-h-[260px]"
-            onMouseEnter={stopAutoPlay}
-            onMouseLeave={startAutoPlay}
-          >
-            <div className="flex flex-col items-center text-center">
-              <div className="mb-6">
-                <svg className="w-12 h-12 text-swiftsell-blue/50" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                </svg>
-              </div>
-              
-              <div className="testimonial-content">
-                {testimonials.map((testimonial, index) => (
-                  <div 
-                    key={index} 
-                    className={`testimonial-item transition-all duration-500 absolute inset-0 flex flex-col justify-center ${index === activeIndex ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-                  >
-                    <p className="text-lg text-gray-300 mb-6">"{testimonial.text}"</p>
-                    <div>
-                      <p className="font-bold text-white">{testimonial.name}</p>
-                      <p className="text-sm text-gray-400">{testimonial.role}, {testimonial.company}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="flex space-x-2 mt-8">
-                {testimonials.map((_, index) => (
-                  <button 
-                    key={index} 
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${index === activeIndex ? "bg-swiftsell-blue w-6" : "bg-gray-600"}`}
-                    onClick={() => setActiveIndex(index)}
-                    aria-label={`Go to slide ${index + 1}`}
-                  />
-                ))}
-              </div>
+        <div className="max-w-6xl mx-auto" ref={cardsRef}>
+          <Carousel className="w-full">
+            <CarouselContent>
+              {testimonials.map((testimonial, index) => (
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                  <Card className="testimonial-card opacity-0 glass-card border-white/5 bg-black/20 backdrop-blur-md hover:border-swiftsell-blue/20 transition-all duration-300 min-h-[260px]">
+                    <CardContent className="p-6 flex flex-col justify-between h-full">
+                      <div className="mb-4">
+                        <svg className="w-8 h-8 text-swiftsell-blue/50 mb-4" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                        </svg>
+                        <p className="text-gray-300">{testimonial.text}</p>
+                      </div>
+                      <div>
+                        <p className="font-bold text-white">{testimonial.name}</p>
+                        <p className="text-sm text-gray-400">{testimonial.role}, {testimonial.company}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="flex justify-center mt-6">
+              <CarouselPrevious className="relative static transform-none mx-2 bg-black/30 hover:bg-swiftsell-blue/20" />
+              <CarouselNext className="relative static transform-none mx-2 bg-black/30 hover:bg-swiftsell-blue/20" />
             </div>
-            
-            <button 
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/20 hover:bg-swiftsell-blue/20 flex items-center justify-center text-white transition-all"
-              onClick={prevTestimonial}
-              aria-label="Previous testimonial"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            
-            <button 
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/20 hover:bg-swiftsell-blue/20 flex items-center justify-center text-white transition-all"
-              onClick={nextTestimonial}
-              aria-label="Next testimonial"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
+          </Carousel>
         </div>
       </div>
     </section>

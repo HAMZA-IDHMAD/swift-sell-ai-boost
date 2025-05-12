@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import ProblemSection from "@/components/ProblemSection";
@@ -15,6 +15,7 @@ import { ArrowUp } from "lucide-react";
 
 const Index = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const sectionsRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     // Google Fonts for Inter
@@ -32,7 +33,31 @@ const Index = () => {
       }
     };
     
+    // Initialize scroll animations
+    const initScrollAnimations = () => {
+      const sections = document.querySelectorAll('section');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-fade-in');
+            entry.target.classList.remove('opacity-0');
+          }
+        });
+      }, { threshold: 0.15 });
+      
+      sections.forEach(section => {
+        if (!section.classList.contains('animate-fade-in')) {
+          observer.observe(section);
+        }
+      });
+    };
+    
     window.addEventListener("scroll", handleScroll);
+    
+    // Initialize animations after a short delay to ensure DOM is ready
+    setTimeout(initScrollAnimations, 100);
+    
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   
@@ -44,14 +69,14 @@ const Index = () => {
   };
   
   return (
-    <div className="min-h-screen bg-swiftsell-dark text-white">
+    <div ref={sectionsRef} className="min-h-screen bg-swiftsell-dark text-white overflow-x-hidden">
       <Navbar />
       <HeroSection />
       <ProblemSection />
       <FeaturesSection />
       <CoreFeaturesSection />
-      <HowItWorks />
       <MessagingChannelsSection />
+      <HowItWorks />
       <Testimonials />
       <CtaSection />
       <Footer />

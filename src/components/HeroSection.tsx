@@ -1,18 +1,46 @@
 
 import { Button } from "@/components/ui/button";
 import AnimatedText from "./ui/AnimatedText";
+import { useEffect, useRef } from "react";
 
 const HeroSection = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!sectionRef.current) return;
+      
+      const scrollPosition = window.scrollY;
+      const parallaxElements = sectionRef.current.querySelectorAll('.parallax');
+      
+      parallaxElements.forEach((element, index) => {
+        const speed = 0.2 + (index * 0.1);
+        const yPos = scrollPosition * speed;
+        (element as HTMLElement).style.transform = `translateY(${yPos}px)`;
+      });
+    };
+    
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <div className="relative min-h-screen flex items-center bg-hero-pattern overflow-hidden pt-20">
-      {/* Background animated elements */}
+    <div 
+      ref={sectionRef}
+      className="relative min-h-screen flex items-center overflow-hidden pt-20"
+    >
+      {/* Full width background with animated gradient */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-swiftsell-blue/20 via-swiftsell-violet/10 to-transparent opacity-20"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-swiftsell-blue/20 via-swiftsell-violet/10 to-transparent opacity-30"></div>
         
-        {/* Floating bubbles */}
-        <div className="absolute top-1/3 left-1/4 w-32 h-32 rounded-full bg-swiftsell-blue/10 animate-float"></div>
-        <div className="absolute top-2/3 right-1/3 w-24 h-24 rounded-full bg-swiftsell-violet/10 animate-float animate-delay-500"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-16 h-16 rounded-full bg-swiftsell-cyan/10 animate-float animate-delay-1000"></div>
+        {/* Animated floating elements */}
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-gradient-to-r from-swiftsell-blue/10 to-swiftsell-violet/5 blur-3xl animate-float parallax"></div>
+        <div className="absolute top-2/3 right-1/4 w-48 h-48 rounded-full bg-gradient-to-r from-swiftsell-violet/10 to-swiftsell-blue/5 blur-2xl animate-float animate-delay-500 parallax"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-32 h-32 rounded-full bg-swiftsell-cyan/10 blur-xl animate-float animate-delay-1000 parallax"></div>
+        
+        {/* Chat bubble decorations */}
+        <div className="absolute top-1/3 right-[15%] w-16 h-16 rounded-tr-xl rounded-bl-xl rounded-br-xl bg-swiftsell-blue/10 transform rotate-12 animate-float"></div>
+        <div className="absolute bottom-1/3 left-[20%] w-12 h-12 rounded-tl-xl rounded-tr-xl rounded-br-xl bg-swiftsell-violet/10 transform -rotate-12 animate-float animate-delay-700"></div>
         
         {/* Wave effect */}
         <div className="absolute bottom-0 left-0 right-0 h-64 overflow-hidden">
