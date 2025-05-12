@@ -1,6 +1,6 @@
 
 import { useState, useRef, useEffect } from "react";
-import { Whatsapp, Instagram, Facebook, MessageSquare } from "lucide-react";
+import { MessageSquare, Instagram, Facebook } from "lucide-react";
 import AnimatedText from "./ui/AnimatedText";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -146,7 +146,7 @@ const MessagingChannelsSection = () => {
   const getChannelIcon = (channel: ChannelType) => {
     switch (channel) {
       case "whatsapp":
-        return <Whatsapp className="mr-2 h-4 w-4" />;
+        return <MessageSquare className="mr-2 h-4 w-4" />;
       case "instagram":
         return <Instagram className="mr-2 h-4 w-4" />;
       case "facebook":
@@ -161,7 +161,7 @@ const MessagingChannelsSection = () => {
       {/* Background floating icons */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/5 text-swiftsell-blue/5 animate-float">
-          <Whatsapp size={120} />
+          <MessageSquare size={120} />
         </div>
         <div className="absolute bottom-1/4 right-1/5 text-swiftsell-violet/5 animate-float animate-delay-700">
           <Instagram size={100} />
