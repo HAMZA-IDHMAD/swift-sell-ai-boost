@@ -9,6 +9,7 @@ import MessagingChannelsSection from "@/components/MessagingChannelsSection";
 import HowItWorks from "@/components/HowItWorks";
 import Testimonials from "@/components/Testimonials";
 import FaqSection from "@/components/FaqSection";
+import MembershipsSection from "@/components/MembershipsSection";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -80,6 +81,9 @@ const Index = () => {
       <HowItWorks />
       <Testimonials />
       <FaqSection />
+      <div id="memberships">
+        <MembershipsSection />
+      </div>
       <CtaSection />
       <Footer />
       
