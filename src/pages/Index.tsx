@@ -8,6 +8,7 @@ import CoreFeaturesSection from "@/components/CoreFeaturesSection";
 import MessagingChannelsSection from "@/components/MessagingChannelsSection";
 import HowItWorks from "@/components/HowItWorks";
 import Testimonials from "@/components/Testimonials";
+import FaqSection from "@/components/FaqSection";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -78,6 +79,7 @@ const Index = () => {
       <MessagingChannelsSection />
       <HowItWorks />
       <Testimonials />
+      <FaqSection />
       <CtaSection />
       <Footer />
       

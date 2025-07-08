@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import AnimatedText from "./ui/AnimatedText";
 import { useEffect, useRef } from "react";
+import { MessageCircle, Camera, Send } from "lucide-react";
 
 const HeroSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -38,9 +39,16 @@ const HeroSection = () => {
         <div className="absolute top-2/3 right-1/4 w-48 h-48 rounded-full bg-gradient-to-r from-swiftsell-violet/10 to-swiftsell-blue/5 blur-2xl animate-float animate-delay-500 parallax"></div>
         <div className="absolute bottom-1/4 left-1/3 w-32 h-32 rounded-full bg-swiftsell-cyan/10 blur-xl animate-float animate-delay-1000 parallax"></div>
         
-        {/* Chat bubble decorations */}
-        <div className="absolute top-1/3 right-[15%] w-16 h-16 rounded-tr-xl rounded-bl-xl rounded-br-xl bg-swiftsell-blue/10 transform rotate-12 animate-float"></div>
-        <div className="absolute bottom-1/3 left-[20%] w-12 h-12 rounded-tl-xl rounded-tr-xl rounded-br-xl bg-swiftsell-violet/10 transform -rotate-12 animate-float animate-delay-700"></div>
+        {/* Social Media Platform Icons */}
+        <div className="absolute top-1/3 right-[15%] w-16 h-16 rounded-2xl bg-green-500/20 backdrop-blur-sm flex items-center justify-center transform rotate-12 animate-float">
+          <MessageCircle className="w-8 h-8 text-green-400" />
+        </div>
+        <div className="absolute bottom-1/3 left-[20%] w-14 h-14 rounded-xl bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-sm flex items-center justify-center transform -rotate-12 animate-float animate-delay-700">
+          <Camera className="w-7 h-7 text-pink-400" />
+        </div>
+        <div className="absolute top-1/2 left-[10%] w-12 h-12 rounded-lg bg-blue-500/20 backdrop-blur-sm flex items-center justify-center transform rotate-6 animate-float animate-delay-300">
+          <Send className="w-6 h-6 text-blue-400" />
+        </div>
         
         {/* Wave effect */}
         <div className="absolute bottom-0 left-0 right-0 h-64 overflow-hidden">

@@ -184,7 +184,7 @@ const MessagingChannelsSection = () => {
     { sender: "customer", text: "Hey, I saw your post about the new sneakers. Are those still available?" },
     { sender: "ai", text: "Hi there! Yes, the Urban Max Sneakers are available in sizes 7-12. Which size were you interested in?" },
     { sender: "customer", text: "I need a size 9. How much are they?" },
-    { sender: "customer", productImage: {
+    { sender: "customer", text: "", productImage: {
       src: "/placeholder.svg",
       productName: "Urban Max Sneakers",
       price: "$79.99"
@@ -197,7 +197,7 @@ const MessagingChannelsSection = () => {
     { sender: "ai", text: "Yes! We ship to over 30 countries. Where are you located?" },
     { sender: "customer", text: "I'm in Canada" },
     { sender: "ai", audioMessage: true, text: "Perfect! We offer shipping to Canada for a flat rate of $9.99, or free on orders over $75." },
-    { sender: "customer", productImage: {
+    { sender: "customer", text: "", productImage: {
       src: "/placeholder.svg",
       productName: "Comfort+ Pillow Set",
       price: "$49.99"
